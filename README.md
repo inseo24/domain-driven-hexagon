@@ -1,21 +1,21 @@
 # Domain-Driven Hexagon
 
-**Check out my other repositories**:
+**다른 레포지터리도 찾아봐 주세요!**
 
-- [Backend best practices](https://github.com/Sairyss/backend-best-practices) - Best practices, tools and guidelines for backend development.
-- [Full-stack application example](https://github.com/Sairyss/full-stack-application-example) - an example of a simple full-stack application using NodeJS + NestJS, MongoDB + Mongoose, NX Monorepo, etc.
+- [Backend best practices](https://github.com/Sairyss/backend-best-practices) - 백엔드 개발에 좋은 예시를 담음
+- [Full-stack application example](https://github.com/Sairyss/full-stack-application-example) - NodeJS + NestJS, MongoDB + Mongoose, NX Monorepo, etc 로 만든 풀스택 예시
 
 ---
 
-The main emphasis of this project is to provide recommendations on how to design software applications. In this readme are presented some of the techniques, tools, best practices, architectural patterns and guidelines gathered from different sources.
+이 프로젝트에서 가장 중요한 건 어떻게 소프트웨어 앱 디자인을 할지 권장사항을 제공함에 있습니다. Readme에는 여러 소스에서 찾은 몇몇 기술, 툴, 좋은 예시, 아키텍처 패턴과 가이드라인을 제공합니다.
 
-**Everything below should be seen as a recommendation**. Keep in mind that different projects have different requirements, so any pattern mentioned in this readme can be replaced or skipped if needed.
+**아래의 모든 글은 추천사항일 뿐입니다.** 다른 프로젝트에서 다르게 적용될 수 있음을 명심하고 필요한 것만 체크하고 필요하지 않으면 넘어가셔도 됩니다.
 
-Code examples are written using [NodeJS](https://nodejs.org/en/), [TypeScript](https://www.typescriptlang.org/), [NestJS](https://docs.nestjs.com/) framework and [Typeorm](https://www.npmjs.com/package/typeorm) for the database access.
+코드는 NodeJS, TypeScript, NestJS, Typeorm으로 작성되어 있습니다.
 
-Though patterns and principles presented here are **framework/language agnostic**, so above technologies can be easily replaced with any alternative. No matter what language or framework is used, any application can benefit from principles described below.
+위 작성된 언어 외의 다른 언어로도 하려면 다 하실 수 있습니다~!
 
-**Note**: code examples are adapted to TypeScript and mentioned above frameworks so may not fit well for other languages. Also remember that code examples presented here are just examples and must be changed according to project's needs or personal preference.
+**참고**: 코드 예는 TypeScript에 맞게 작성되어 다른 언어에 적합하지 않을 수 있습니다. 또한 여기에 제시된 코드 예제는 예시일 뿐이며 프로젝트의 필요나 개인적인 선호도에 따라 변경될 수 있다는 걸 기억하세요!
 
 ---
 
@@ -77,7 +77,7 @@ Though patterns and principles presented here are **framework/language agnostic*
 
 # Architecture
 
-Mainly based on:
+주로 기본으로 삼은 것은 아래와 같습니다 :
 
 - [Domain-Driven Design (DDD)](https://en.wikipedia.org/wiki/Domain-driven_design)
 - [Hexagonal (Ports and Adapters) Architecture](https://blog.octo.com/en/hexagonal-architecture-three-principles-and-an-implementation-example/)
@@ -87,46 +87,70 @@ Mainly based on:
 - [SOLID Principles](https://en.wikipedia.org/wiki/SOLID)
 - [Software Design Patterns](https://refactoring.guru/design-patterns/what-is-pattern)
 
-And many other sources (more links below in every chapter).
+등 그 외 많은 다른 소스를 아래 글에서 더 볼 수 있습니다.
 
-Before we begin, here are the PROS and CONS of using a complete architecture like this:
+시작하기 전에 위 아키텍처의 장단점을 보고 시작할까요?
 
-#### Pros
+**장점**
 
-- Independent of external frameworks, technologies, databases, etc. Frameworks and external resources can be plugged/unplugged with much less effort.
-- Easily testable and scalable.
-- More secure. Some security principles are baked in design itself.
-- The solution can be worked on and maintained by different teams, without stepping on each other's toes.
-- Easier to add new features. As the system grows over time, the difficulty in adding new features remains constant and relatively small.
-- If the solution is properly broken apart along [bounded context](https://martinfowler.com/bliki/BoundedContext.html) lines, it becomes easy to convert pieces of it into microservices if needed.
+- 프레임워크와 외부 리소스를 훨씬 적은 노력으로 독립적으로 연결할 수 있습니다.
+- 쉽게 테스트 할 수 있고 확장 가능합니다.
+- 더 안전합니다. 일부 보안 원칙은 아키텍처 디자인 자체에서 지켜집니다.
+- 다른 팀과의 작업에서 좀 더 효과적이고 유지할 수 있습니다.
+- 시간이 지나도 기능 추가가 상대적으로 쉽습니다.
+- 솔루션이 [bounded context](https://martinfowler.com/bliki/BoundedContext.html)에 따라 제대로 분리된다면, 필요 시 그 부분을 마이크로서비스로 쉽게 변환할 수 있습니다.
 
-#### Cons
 
-- This is a sophisticated architecture which requires a firm understanding of quality software principles, such as SOLID, Clean/Hexagonal Architecture, Domain-Driven Design, etc. Any team implementing such a solution will almost certainly require an expert to drive the solution and keep it from evolving the wrong way and accumulating technical debt.
+**단점**
 
-- Some of the practices presented here are not recommended for small-medium sized applications with not a lot of business logic. There is added up-front complexity to support all those building blocks and layers, boilerplate code, abstractions, data mapping etc. thus implementing a complete architecture like this is generally ill-suited to simple [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) applications and could over-complicate such solutions. Some of the described below principles can be used in a smaller sized applications, but must be implemented only after analyzing and understanding all pros and cons.
+- SOLID, Clean/Hexagonal Architecture, Domain-Driven Design 등과 같은 고품질 소프트웨어 원칙에 대한 정확한 이해가 필요합니다. 솔루션을 구현하는 모든 팀원은 이 아키텍처가 잘못된 방식으로 진화하고 기술 부채를 축적하는 것을 막아야 합니다.
+- 여기에 제시된 convention 중 일부는 비즈니스 로직이 많지 않은 중소기업 애플리케이션에는 권장되지 않습니다. 모든 빌딩 블록과 레이어, 보일러플레이트 코드, 추상화, 데이터 매핑 등을 지원하기 위해 선행적인 복잡성이 추가되었습니다.
+- 따라서 이와 같은 완전한 아키텍처를 구현하는 것은 일반적으로 간단한 CRUD 애플리케이션에 적합하지 않으며 오히려 과하게 복잡하게 만들 수 있습니다. 아래에 설명된 원칙 중 일부는 더 작은 크기의 응용 프로그램에서 사용할 수 있지만, 모든 장단점을 분석하고 이해한 후에만 구현되어야 합니다.
+
 
 # Diagram
 
 ![Domain-Driven Hexagon](assets/images/DomainDrivenHexagon.png)
 <sup>Diagram is mostly based on [this one](https://github.com/hgraca/explicit-architecture-php#explicit-architecture-1) + others found online</sup>
 
-In short, data flow looks like this (from left to right):
+사용자가 마주하는 인터페이스들
 
-- Request/CLI command/event is sent to the controller using plain DTO;
-- Controller parses this DTO, maps it to a Command/Query object format and passes it to a Application service;
-- Application service handles this Command/Query; it executes business logic using domain services and/or entities and uses the infrastructure layer through ports;
-- Infrastructure layer uses a mapper to convert data to format that it needs, uses repositories to fetch/persist data and adapters to send events or do other I/O communications, maps data back to domain format and returns it back to Application service;
-- After the Application service finishes doing its job, it returns data/confirmation back to Controllers;
-- Controllers return data back to the user (if application has presenters/views, those are returned instead).
+- Input/Output DTOs
+- Controllers
+- Presenters
 
-Each layer is in charge of its own logic and has building blocks that usually should follow a [Single-responsibility principle](https://en.wikipedia.org/wiki/Single-responsibility_principle) when possible and when it makes sense (for example, using `Repositories` only for database access, using `Entities` for business logic, etc).
+의존성 주입될 것들
 
-**Keep in mind** that different projects can have more or less steps/layers/building blocks than described here. Add more if the application requires it, and skip some if the application is not that complex and doesn't need all that abstraction.
+- 프레임워크
+- Jobs/Tasks
+- I/O
 
-General recommendation for any project: analyze how big/complex the application will be, find a compromise and use as many layers/building blocks as needed for the project and skip ones that may over-complicate things.
+중요 내부 도메인층:
 
-More in details on each step below.
+- Entities - 도메인 로직과 특성을 포함, id를 갖음.
+- Value Object - 1개 혹은 여러 개의 특성과 이 특성들이 포함된 로직을 감싼다, id가 없다.
+- Domain Services - 다양한 엔티티 사이에서 domain logic을 관리한다.(orchestration)
+
+중요 외부 애플리케이션층:
+
+- ports : 앱의 경계에 있다. adapters로 implementation된다.
+- Application Services : usecase로 implementation 된다.
+
+데이터는 왼쪽에서 오른쪽으로 흐릅니다.
+
+- request/CLI command/이벤트는 일반 DTO를 타고 컨트롤러로 보내집니다.
+- controller는 이 DTO를 분석하고 command/query 포맷으로 맵핑하고 애플리케이션 서비스에 전달합니다.
+- 서비스에서 이 command/query를 처리합니다; domain 서비스 및 entity를 사용해 비즈니스 로직을 처리하고 port를 통해 infra 계층을 사용합니다.(repository, 3rd party api etc)
+- infra 계층은 매퍼를 사용해 필요한 형식의 데이터로 변환하고, 레포지터리를 사용해 데이터와 adpater를 가져오거나 먼저 이벤트를 보내고 다른 i/o 작업을 하는 등 작업을 수행하고, 데이터를 도메인 형식으로 다시 맵핑해 서비스로 반환합니다.
+- 서비스가 작업을 완료하면 이를 다시 컨트롤러로 반환합니다.
+- 컨트롤러는 데이터를 사용자에에게 혹은 뷰에 반환합니다.
+
+각 계층은 자체적인 로직을 담당하고 일반적으로 단일 책임 원칙을 준수해야 합니다. (예를 들어, 데이터베이스 접근할 때만 레포지터리를 사용한다거나, 비즈니스 로직에 엔티티를 사용하는 등등)
+
+프로젝트에 따라 여기에 적힌 것보다 더 많거나 더 적은 레이어를 가질 수 있음을 명심하세요! 필요한 경우에는 더 추가하고, 복잡하지 않아 모든 추상화가 필요하지 않은 경우 일부는 건너 뛰시길 바랍니다!
+
+아래부터 각 단계에 대한 설명이 나옵니다.
+
 
 # Modules
 
