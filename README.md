@@ -136,6 +136,9 @@
 - ports : 앱의 경계에 있다. adapters로 implementation된다.
 - Application Services : usecase로 implementation 된다.
 
+
+---
+
 데이터는 왼쪽에서 오른쪽으로 흐릅니다.
 
 - request/CLI command/이벤트는 일반 DTO를 타고 컨트롤러로 보내집니다.
